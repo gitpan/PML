@@ -125,7 +125,7 @@ use Cwd qw(cwd chdir);
 # Constants
 #
 ################################################################################
-use constant ID							=> '$Id: PML.pm,v 1.28 2000/07/31 17:14:44 pjones Exp $';
+use constant ID							=> '$Id: PML.pm,v 1.29 2000/07/31 20:39:50 pjones Exp $';
 
 use constant PML_V						=>  0;  # pml variables
 use constant PML_LINE					=>  1;  # current line number
@@ -201,7 +201,7 @@ use constant G_RE_IF					=> qr/^\@(elsif|else)/o;
 #
 ################################################################################
 use vars qw($VERSION $AUTOLOAD);
-$VERSION	= '0.4.0';
+$VERSION	= '0.4.1';
 
 my %function_arg_block = (
 	'if'		=> \&parse_if,
@@ -395,9 +395,8 @@ sub new
 		# Set up the loop counters
 		$self->[PML_LOOP_COUNTERS]{$_} = 0 foreach keys %loop_functions;
 	} else { # we need to clone an existsing object
-		eval {require Storable}; if ($@) { # make sure Storable is avaliable
+		eval {require Storable} or # make sure Storable is avaliable
 			croak "can't call new as a method unless you install the Storable module";
-		}
 
 		$self->[PML_V] 				= Storable::dclone($ref->[PML_V]);
 		$self->[PML_W] 				= $ref->[PML_W];
